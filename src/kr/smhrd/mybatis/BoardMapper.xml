@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.smhrd.mybatis.BoardMapper"> <!-- 매퍼의 중복 이름이 있을때 에러가 뜨기때문에 namespace를 사용 -->
+	       <!-- DAO메서드와 이름을 동일하게       ,VO를 resultType에 기입해줌-->                         
+    <select id="boardList" resultType="boardVO">	
+	 select idx,title,count,contents,writer, DATE_FORMAT(indate,'%Y-%m-%d') 
+	 AS indate from tbl_board
+    </select>
+    <insert id="boardInsert" > <!--  파라미터타입은 생략이 가능하다.!!!!! -->
+     insert into tbl_board(title, contents, writer) values(#{title},#{contents},#{writer}) <!-- ?,?,? =>  #{},#{},#{}-->
+    </insert>   
+    <delete id="boardDelete" >
+     delete from tbl_board where idx = #{idx}   <!-- idx => cnt 로 해도됨 단 파라미터값이 하나일때만 -->
+    </delete>
+    <select id="boardContent" resultType="boardVO"> <!-- vo로 묶어주고 idx로 파라미터값을 불러옴 -->
+        select idx,title,count, contents,writer, DATE_FORMAT(indate,'%Y-%m-%d') AS indate from tbl_board where idx = #{idx}				
+    </select>
+    <update id="boardUpdate" >        
+        update tbl_board set title = #{title},contents = #{contents} where idx = #{idx}
+    </update>
+    <select id="loginMember" resultType="userVO">
+        select * from tbl_user where user_id=#{user_id} and password=#{password}
+    </select>
+</mapper>
